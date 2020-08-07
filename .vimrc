@@ -662,12 +662,12 @@ let mapleader = "\ "
 
 
 "Alt Combos
-	nnoremap <M-i> :IndentGuidesToggle<cr>  " Toggle Indent Highlight
-	nnoremap <M-g> :Goyo<cr>                " Toggle WriterMode
+        nnoremap <M-i> :IndentGuidesToggle<cr>  " Toggle Indent Highlight
+        nnoremap <M-g> :Goyo<cr>                " Toggle WriterMode
 
-	nnoremap <M-G> :DefaultGUI<cr>          " Load Default GUI
-	nnoremap <M-T> :retab<cr>               " Converts Pre-existing Tabs to Vimrc Rules
-	nnoremap <M-W> :WordProcessor<cr>       " Toggle Word Processor
+        nnoremap <M-G> :DefaultGUI<cr>          " Load Default GUI
+        nnoremap <M-T> :retab<cr>               " Converts Pre-existing Tabs to Vimrc Rules
+        nnoremap <M-W> :WordProcessor<cr>       " Toggle Word Processor
         nnoremap <M-Y> :vsp $MYVIMRC<CR>        " Open my vimrc file in vertical tab
         nnoremap <M-Z> :source $MYVIMRC<CR>     " Reload my vimrc file
 
