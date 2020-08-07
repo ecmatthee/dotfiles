@@ -72,6 +72,7 @@ call plug#begin('~/.vim/plugged')
         Plug 'https://github.com/dhruvasagar/vim-table-mode'                                            "Table Controls
 	Plug 'https://github.com/justinmk/vim-sneak'                                                    "Vim Movement Enhacement
 	Plug 'https://github.com/pbrisbin/vim-mkdir'                                                    "Auto creates non-existing directories when saving
+        Plug 'https://github.com/tpope/vim-fugitive'
 
     "Bonus Features
         Plug 'https://github.com/scrooloose/nerdtree'                                                   "File Tree Manager
@@ -93,6 +94,7 @@ call plug#end()
     filetype plugin indent on
     syntax enable
 
+    set t_Co=256
 "Hybrid Numbering
     set number
     set relativenumber
@@ -333,15 +335,15 @@ autocmd BufWritePre * %s/\s\+$//e       "Trim whitespace on save
 
 "Theme and Statusline
     fun! Custom_Colours()
-        hi  User1   ctermbg=blue    ctermfg=green   guibg=#9bcd9b   guifg=#ffffff
-        hi  User2   ctermbg=blue    ctermfg=green   guibg=#444444   guifg=#ffffff
-        hi  User3   ctermbg=blue    ctermfg=green   guibg=#00c5cd   guifg=#ffffff
-        hi  User4   ctermbg=blue    ctermfg=green   guibg=#585858   guifg=#969696
-        hi  User5   ctermbg=blue    ctermfg=green   guibg=#808080   guifg=#444444
-        hi  User6   ctermbg=blue    ctermfg=green   guibg=#000000   guifg=#000000
-        hi  User7   ctermbg=blue    ctermfg=green   guibg=#000000   guifg=#000000
-        hi  User8   ctermbg=blue    ctermfg=green   guibg=#000000   guifg=#000000
-        hi  User9   ctermbg=blue    ctermfg=green   guibg=#000000   guifg=#000000
+        hi  User1   ctermbg=072     ctermfg=015     guibg=#5faf87   guifg=#ffffff
+        hi  User2   ctermbg=238     ctermfg=015     guibg=#444444   guifg=#ffffff
+        hi  User3   ctermbg=063     ctermfg=015     guibg=#5f5fff   guifg=#ffffff
+        hi  User4   ctermbg=240     ctermfg=247     guibg=#585858   guifg=#9e9e9e
+        hi  User5   ctermbg=244     ctermfg=238     guibg=#808080   guifg=#444444
+        hi  User6   ctermbg=166     ctermfg=015     guibg=#d75f00   guifg=#ffffff
+        hi  User7   ctermbg=000     ctermfg=000     guibg=#000000   guifg=#000000
+        hi  User8   ctermbg=000     ctermfg=000     guibg=#000000   guifg=#000000
+        hi  User9   ctermbg=000     ctermfg=000     guibg=#000000   guifg=#000000
     endfunction
 
     fun! Default_GUI()
@@ -352,8 +354,8 @@ autocmd BufWritePre * %s/\s\+$//e       "Trim whitespace on save
         set guifont=DejaVuSansMono\ Nerd\ Font\ Mono\ 10
         set laststatus=2
 
-        hi StartifyHeader guifg=#019833
-        hi StartifyFooter guifg=#1793d1
+        hi StartifyHeader ctermfg=036    guifg=#00af87
+        hi StartifyFooter ctermfg=032    guifg=#0087d7
 
         call Custom_Colours()
 
@@ -382,15 +384,15 @@ autocmd BufWritePre * %s/\s\+$//e       "Trim whitespace on save
         "Automatically change the statusline color depending on mode
         function! ChangeStatuslineColor()
             if (mode() =~# '\v(n|no)')
-                exe 'hi! StatusLine ctermfg=008 guifg=#434343'
+                exe 'hi! StatusLine ctermfg=008 guifg=#808080'
             elseif (mode() =~# '\v(v|V|)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-                exe 'hi! StatusLine ctermfg=005 guifg=#c57bdb'
+                exe 'hi! StatusLine ctermfg=005 guifg=#800080'
             elseif (mode() ==# 'i')
                 exe 'hi! StatusLine ctermfg=004 guifg=#4CBED5'
             elseif (mode() ==# 'R')
-                exe 'hi! StatusLine ctermfg=004 guifg=#de6d77'
+                exe 'hi! StatusLine ctermfg=203 guifg=#de6d77'
             else
-                exe 'hi! StatusLine ctermfg=006 guifg=#F5F544'
+                exe 'hi! StatusLine ctermfg=184 guifg=#F5F544'
             endif
             return ''
         endfunction
@@ -401,8 +403,8 @@ autocmd BufWritePre * %s/\s\+$//e       "Trim whitespace on save
             if (bytes >= 1024)
                 let kbytes = bytes / 1024
             endif
-            if (exists('kbytes') && kbytes >= 1000)
-                let mbytes = kbytes / 1000
+            if (exists('kbytes') && kbytes >= 1024)
+                let mbytes = kbytes / 1024
             endif
             if bytes <= 0
                 return '0'
@@ -435,6 +437,8 @@ autocmd BufWritePre * %s/\s\+$//e       "Trim whitespace on save
         set statusline+=%h                                      "Help file flag
         set statusline+=%r                                      "Read-only flag
         set statusline+=%w                                      "Preview window flag
+        set statusline+=\ %6*                                   "Colour
+        set statusline+=%{FugitiveStatusline()}                 "Git Branch
         set statusline+=\ %2*                                   "Colour
 
         set statusline+=\ %=                                    "Swap Sides
@@ -614,7 +618,7 @@ command! -nargs=* DefaultGUI call Default_GUI()
 "----------------------------
 "Custom Functions
 "----------------------------
-"
+
 "----------------------------
 "Keybinds
 "----------------------------
