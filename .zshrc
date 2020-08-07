@@ -32,7 +32,7 @@ fi
 # History stuff
 #------------------------------
 HISTFILE="${ZDOTDIR}/.zsh_history"
-HISTSIZE='64000'
+HISTSIZE='10000'
 SAVEHIST="${HISTSIZE}"
 
 # Ignore duplicate in history.
