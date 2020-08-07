@@ -2,7 +2,7 @@
 # System
 #------------------------------
 
-# SSH-AGENT START > for KeepassXC
+# SSH-AGENT START >> for KeepassXC
 export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
 ssh-add -l 2>/dev/null >/dev/null
 if [ $? -ge 2 ]; then
