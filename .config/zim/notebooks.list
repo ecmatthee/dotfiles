@@ -1,0 +1,16 @@
+[NotebookList]
+Default=
+1=~/root/doc/Notebooks/Notebook
+2=~/root/doc/Notebooks/Undead Pestilence GDD
+
+[Notebook 1]
+uri=~/root/doc/Notebooks/Notebook
+name=Notebook
+interwiki=None
+icon=None
+
+[Notebook 2]
+uri=~/root/doc/Notebooks/Undead Pestilence GDD
+name=Undead Pestilence GDD
+interwiki=None
+icon=None
