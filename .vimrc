@@ -55,33 +55,37 @@ endif
 call plug#begin('~/.vim/plugged')
 
     "UI
-        Plug 'https://github.com/gruvbox-community/gruvbox'                                             "Theme
-        Plug 'https://github.com/mhinz/vim-startify'                                                    "Title Screen
-        Plug 'https://github.com/bling/vim-bufferline'                                                  "Bufferline
+        Plug 'https://github.com/gruvbox-community/gruvbox'       "Theme
+        Plug 'https://github.com/mhinz/vim-startify'              "Title Screen
+        Plug 'https://github.com/bling/vim-bufferline'            "Bufferline
 
     "Coding
-        Plug 'https://github.com/sheerun/vim-polyglot'                                                  "Language Support
-        Plug 'https://github.com/dense-analysis/ale'                                                    "Syntax Checking
+        Plug 'https://github.com/sheerun/vim-polyglot'            "Language Support
+        Plug 'https://github.com/dense-analysis/ale'              "Syntax Checking
+
+    "Language Support
+        Plug 'https://github.com/dhruvasagar/vim-table-mode'      "Markdown Table Controls
+        Plug 'https://github.com/tmzlogin/vim-markdown-toc'       "Markdown Table-of-Contents Generate
 
     "Editor Improvement
-        Plug 'https://github.com/nathanaelkane/vim-indent-guides'                                       "Indent Highlight
-        Plug 'https://github.com/jiangmiao/auto-pairs'                                                  "Auto closing bracket
-        Plug 'https://github.com/tpope/vim-surround'                                                    "Bracket/Quote/Tag Manipulation
-        Plug 'https://github.com/godlygeek/tabular'                                                     "Tab Control
-        Plug 'https://github.com/tpope/vim-commentary/'                                                 "Commenting Utilities
-        Plug 'https://github.com/dhruvasagar/vim-table-mode'                                            "Table Controls
-	Plug 'https://github.com/justinmk/vim-sneak'                                                    "Vim Movement Enhacement
-	Plug 'https://github.com/pbrisbin/vim-mkdir'                                                    "Auto creates non-existing directories when saving
-        Plug 'https://github.com/tpope/vim-fugitive'
+        Plug 'https://github.com/nathanaelkane/vim-indent-guides' "Indent Highlight
+        Plug 'https://github.com/jiangmiao/auto-pairs'            "Auto closing bracket
+        Plug 'https://github.com/tpope/vim-surround'              "Bracket/Quote/Tag Manipulation
+        Plug 'https://github.com/godlygeek/tabular'               "Tab Control
+        Plug 'https://github.com/tpope/vim-commentary/'           "Commenting Utilities
+        Plug 'https://github.com/pbrisbin/vim-mkdir'              "Auto creates non-existing directories when saving
+        Plug 'https://github.com/tpope/vim-fugitive'              "Git Integration
+        Plug 'https://github.com/junegunn/fzf'                   "Fuzzy Finder
+        Plug 'https://github.com/junegunn/fzf.vim'               "Fuzzy Finder Integration
 
     "Bonus Features
-        Plug 'https://github.com/scrooloose/nerdtree'                                                   "File Tree Manager
-        Plug 'https://github.com/ivalkeen/nerdtree-execute'                                             "Enhances NERDTree -> provides ability to execute files
-        Plug 'https://github.com/mbbill/undotree'                                                       "Visual Undo Tree
-        Plug 'https://github.com/ryanoasis/vim-devicons'
-        Plug 'https://github.com/junegunn/goyo.vim'                                                     "No distraction mode
-        Plug 'https://github.com/junegunn/limelight.vim'                                                "Focus Mode
-        Plug 'https://github.com/antoyo/vim-licenses'                                                   "License Header Support
+        Plug 'https://github.com/scrooloose/nerdtree'             "File Tree Manager
+        Plug 'https://github.com/ivalkeen/nerdtree-execute'       "Enhances NERDTree -> provides ability to execute files
+        Plug 'https://github.com/mbbill/undotree'                 "Visual Undo Tree
+        Plug 'https://github.com/ryanoasis/vim-devicons'          "Added Glypths to vim
+        Plug 'https://github.com/junegunn/goyo.vim'               "No distraction mode
+        Plug 'https://github.com/junegunn/limelight.vim'          "Focus Mode
+        Plug 'https://github.com/antoyo/vim-licenses'             "License Header Support
 
 call plug#end()
 
@@ -93,8 +97,10 @@ call plug#end()
     set nocompatible
     filetype plugin indent on
     syntax enable
+    set mouse=a      "Enable Mouse in terminal
 
     set t_Co=256
+
 "Hybrid Numbering
     set number
     set relativenumber
@@ -153,7 +159,7 @@ call plug#end()
     set nrformats-=octal
 
     set scrolloff=1
-    set sidescrolloff=5
+    set sidescrolloff=4
     set display+=lastline
 
     set encoding=utf-8
@@ -666,35 +672,34 @@ let mapleader = "\ "
 
 
 "Alt Combos
-        nnoremap <M-i> :IndentGuidesToggle<cr>  " Toggle Indent Highlight
-        nnoremap <M-g> :Goyo<cr>                " Toggle WriterMode
+    map <Esc>i <A-i>
+    map <Esc>g <A-g>
+    nnoremap <A-i> :IndentGuidesToggle<cr>  " Toggle Indent Highlight
+    nnoremap <A-g> :Goyo<cr>                " Toggle WriterMode
 
-        nnoremap <M-G> :DefaultGUI<cr>          " Load Default GUI
-        nnoremap <M-T> :retab<cr>               " Converts Pre-existing Tabs to Vimrc Rules
-        nnoremap <M-W> :WordProcessor<cr>       " Toggle Word Processor
-        nnoremap <M-Y> :vsp $MYVIMRC<CR>        " Open my vimrc file in vertical tab
-        nnoremap <M-Z> :source $MYVIMRC<CR>     " Reload my vimrc file
+    " nnoremap <M-G> :DefaultGUI<cr>          " Load Default GUI
+    " nnoremap <M-T> :retab<cr>               " Converts Pre-existing Tabs to Vimrc Rules
+    " nnoremap <M-W> :WordProcessor<cr>       " Toggle Word Processor
+    " nnoremap <M-Y> :vsp $MYVIMRC<CR>        " Open my vimrc file in vertical tab
+    " nnoremap <M-Z> :source $MYVIMRC<CR>     " Reload my vimrc file
 
 
 nnoremap <space> za                         " Fold Code
 
 "Better Buffer Movement: CTRL + Direction
-	map <C-j> <C-W>j
-	map <C-k> <C-W>k
-	map <C-h> <C-W>h
-	map <C-l> <C-W>l
+    map <C-j> <C-W>j
+    map <C-k> <C-W>k
+    map <C-h> <C-W>h
+    map <C-l> <C-W>l
+
+" Following keys are used by TMUX
+    " map <M-j> <C-W>j
+    " map <M-k> <C-W>k
+    " map <M-h> <C-W>h
+    " map <M-l> <C-W>l
 
 "Disable arrow movement, resize splits instead.
-	nnoremap <Up>    :resize +2<CR>
-	nnoremap <Down>  :resize -2<CR>
-	nnoremap <Left>  :vertical resize +2<CR>
-	nnoremap <Right> :vertical resize -2<CR>
-
-"Line Movement
-    nnoremap <A-j> :m .+1<CR>==
-    nnoremap <A-k> :m .-2<CR>==
-    inoremap <A-j> <Esc>:m .+1<CR>==gi
-    inoremap <A-k> <Esc>:m .-2<CR>==gi
-    vnoremap <A-j> :m '>+1<CR>gv=gv
-    vnoremap <A-k> :m '<-2<CR>gv=gv
-
+    nnoremap <Up>    :resize +2<CR>
+    nnoremap <Down>  :resize -2<CR>
+    nnoremap <Left>  :vertical resize +2<CR>
+    nnoremap <Right> :vertical resize -2<CR>

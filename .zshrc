@@ -27,7 +27,7 @@ ZDOTDIR=${ZDOTDIR:-${HOME}}
 if ! [[ "${PATH}" =~ "^${HOME}/bin" ]]; then
     export PATH="${HOME}/bin:${PATH}"
 fi
-
+export XDG_CONFIG_HOME="$HOME/.config"
 #------------------------------
 # History stuff
 #------------------------------
@@ -179,6 +179,61 @@ function myip {
 	echo # Newline.
 }
 
+x () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xvjf $1    ;;
+            *.tar.gz)    tar xvzf $1    ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar x $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xvf $1     ;;
+            *.tbz2)      tar xvjf $1    ;;
+            *.tgz)       tar xvzf $1    ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *.xz)        xz -d $1       ;;
+            *)           echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+function sys-update () {
+    # Mirror list
+    sudo reflector --verbose --latest 100 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
+    # Pacman
+    sudo pacman -Syu
+
+    # Remove Orphans
+    sudo pacman -Rs $(pacman -Qqtd) ## Monitor before confirm --> (sudo pacman -D --asexplicit <package-name>) to add packages to explict list (de-orphanize, AKA adopt)
+
+    # AUR update
+    yay -Syu
+
+    # AUR clean
+    yay -Yc
+
+    # Vim plugin update
+    vim -c :PlugInstall -c :PlugUpdate -c :qa
+}
+
+function browse-packages () {
+    pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
+}
+
+function wttr () {
+    curl wttr.in/$1
+}
+
+function star-wars() {
+    # Ctrl-] to stop --> q to quit telnet
+    telnet towel.blinkenlights.nl
+}
+
 #------------------------------
 # Alias
 #------------------------------
@@ -191,6 +246,8 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 #------------------------------
 # Plugins Config
@@ -200,6 +257,7 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 #bindkey "$terminfo[kcud1]" history-substring-search-down
 bindkey -M emacs '^P' history-substring-search-up
 bindkey -M emacs '^N' history-substring-search-down
+
 
 #------------------------------
 # Power
