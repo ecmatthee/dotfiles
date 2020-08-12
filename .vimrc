@@ -617,10 +617,6 @@ command! -nargs=* DefaultGUI call Default_GUI()
 	autocmd! User GoyoEnter Limelight
 	autocmd! User GoyoLeave Limelight!
 
-"Vim Sneak
-	map f <Plug>Sneak_s
-	map F <Plug>Sneak_S
-
 "----------------------------
 "Custom Functions
 "----------------------------
@@ -703,3 +699,11 @@ nnoremap <space> za                         " Fold Code
     nnoremap <Down>  :resize -2<CR>
     nnoremap <Left>  :vertical resize +2<CR>
     nnoremap <Right> :vertical resize -2<CR>
+
+"Move Lines
+    nnoremap <A-j> :m .+1<CR>==
+    nnoremap <A-k> :m .-2<CR>==
+    inoremap <A-j> <Esc>:m .+1<CR>==gi
+    inoremap <A-k> <Esc>:m .-2<CR>==gi
+    vnoremap <A-j> :m '>+1<CR>gv=gv
+    vnoremap <A-k> :m '<-2<CR>gv=gv
