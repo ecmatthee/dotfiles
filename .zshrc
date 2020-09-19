@@ -108,6 +108,7 @@ NC='\e[0m'
 #------------------------------
 # Functions
 #------------------------------
+
 confirm() {
     local answer
     echo -ne "zsh: sure you want to run '${YELLOW}$*${NC}' [yN]? "
