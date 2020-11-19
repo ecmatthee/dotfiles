@@ -1,15 +1,4 @@
 #------------------------------
-# System
-#------------------------------
-
-# SSH-AGENT START >> for KeepassXC
-# export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
-# ssh-add -l 2>/dev/null >/dev/null
-# if [ $? -ge 2 ]; then
-#    ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
-# fi
-
-#------------------------------
 # Instant Prompt
 #------------------------------
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -265,3 +254,17 @@ bindkey -M emacs '^N' history-substring-search-down
 #------------------------------
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+#------------------------------
+# System
+#------------------------------
+
+# SSH-AGENT START >> for KeepassXC
+# export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
+# ssh-add -l 2>/dev/null >/dev/null
+# if [ $? -ge 2 ]; then
+#    ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+# fi
+
+# SSH Agent >> Keychain
+eval $(keychain --eval --quiet --noask /home/ecmatthee/.ssh/gitlab_arch)
