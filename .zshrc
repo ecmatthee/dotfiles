@@ -98,6 +98,7 @@ NC='\e[0m'
 # Functions
 #------------------------------
 
+# Shutdown Confirmation{
 confirm() {
     local answer
     echo -ne "zsh: sure you want to run '${YELLOW}$*${NC}' [yN]? "
@@ -127,24 +128,7 @@ confirm_wrapper() {
 poweroff() { confirm_wrapper --root $0 "$@"; }
 reboot() { confirm_wrapper --root $0 "$@"; }
 hibernate() { confirm_wrapper --root $0 "$@"; }
-
-dot_progress() {
-    # Fancy progress function from Landley's Aboriginal Linux.
-    # Useful for long rm, tar and such.
-    # Usage:
-    #     rm -rfv /foo | dot_progress
-    local i='0'
-    local line=''
-
-    while read line; do
-        i="$((i+1))"
-        if [ "${i}" = '25' ]; then
-            printf '.'
-            i='0'
-        fi
-    done
-    printf '\n'
-}
+# }
 
 # launch an app
 function launch {
@@ -152,6 +136,7 @@ function launch {
 	$@ &>/dev/null &|
 }
 
+# Find IP address
 function myip {
 	local api
 	case "$1" in
@@ -169,6 +154,7 @@ function myip {
 	echo # Newline.
 }
 
+# Unzip any archive
 x () {
     if [ -f $1 ] ; then
         case $1 in
@@ -191,6 +177,7 @@ x () {
     fi
 }
 
+# Full system update
 function sys-update () {
     # Mirror list
     sudo reflector --verbose --latest 100 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
@@ -211,10 +198,61 @@ function sys-update () {
     vim -c :PlugInstall -c :PlugUpdate -c :qa
 }
 
+# Backup system
+function sys-backup () {
+
+    date=$(date +"%Y-%m-%d")
+
+    # Onedrive (Full History)
+    rclone sync /home/ecmatthee/.ssh onedrive:backup/$date/.ssh -P
+    rclone sync /home/ecmatthee/dev onedrive:backup/$date/dev -P
+    rclone sync /home/ecmatthee/proj onedrive:backup/$date/proj -P
+
+    rclone sync /home/ecmatthee/root/arc onedrive:backup/$date/root/arc -P
+    rclone sync /home/ecmatthee/root/data onedrive:backup/$date/root/data -P
+    rclone sync /home/ecmatthee/root/doc onedrive:backup/$date/root/doc -P
+    rclone sync /home/ecmatthee/root/misc onedrive:backup/$date/root/misc -P
+
+    # Onedrive (Recent)
+    rclone sync /home/ecmatthee/.ssh onedrive:backup/latest/.ssh -P
+    rclone sync /home/ecmatthee/dev onedrive:backup/latest/dev -P
+    rclone sync /home/ecmatthee/proj onedrive:backup/latest/proj -P
+
+    rclone sync /home/ecmatthee/root/arc onedrive:backup/latest/root/arc -P
+    rclone sync /home/ecmatthee/root/data onedrive:backup/latest/root/data -P
+    rclone sync /home/ecmatthee/root/doc onedrive:backup/latest/root/doc -P
+    rclone sync /home/ecmatthee/root/misc onedrive:backup/latest/root/misc -P
+
+    # Mega (Most recent)
+    rclone sync /home/ecmatthee/.ssh mega:backup/.ssh -P
+    rclone sync /home/ecmatthee/dev mega:backup/dev -P
+    rclone sync /home/ecmatthee/proj mega:backup/proj -P
+
+    rclone sync /home/ecmatthee/root/arc mega:backup/root/arc -P
+    rclone sync /home/ecmatthee/root/data mega:backup/root/data -P
+    rclone sync /home/ecmatthee/root/doc mega:backup/root/doc -P
+    rclone sync /home/ecmatthee/root/misc mega:backup/root/misc -P
+}
+
+# Backup system
+function sys-restore () {
+    rclone sync onedrive:backup/latest/.ssh /home/ecmatthee/.ssh -P
+    rclone sync onedrive:backup/latest/dev /home/ecmatthee/dev -P
+    rclone sync onedrive:backup/latest/proj /home/ecmatthee/proj -P
+
+    rclone sync onedrive:backup/latest/root/arc /home/ecmatthee/root/arc -P
+    rclone sync onedrive:backup/latest/root/data /home/ecmatthee/root/data -P
+    rclone sync onedrive:backup/latest/root/doc /home/ecmatthee/root/doc -P
+    rclone sync onedrive:backup/latest/root/misc /home/ecmatthee/root/misc -P
+}
+
+
+# Pacman installed package browser
 function browse-packages () {
     pacman -Slq | fzf --multi --preview 'pacman -Si {1}' | xargs -ro sudo pacman -S
 }
 
+# Get Weather
 function wttr () {
     curl wttr.in/$1
 }
@@ -259,12 +297,5 @@ bindkey -M emacs '^N' history-substring-search-down
 # System
 #------------------------------
 
-# SSH-AGENT START >> for KeepassXC
-# export SSH_AUTH_SOCK=~/.ssh/ssh-agent.$HOSTNAME.sock
-# ssh-add -l 2>/dev/null >/dev/null
-# if [ $? -ge 2 ]; then
-#    ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
-# fi
-
 # SSH Agent >> Keychain
-eval $(keychain --eval --quiet --noask /home/ecmatthee/.ssh/gitlab_arch)
+eval $(keychain --eval --quiet /home/ecmatthee/.ssh/gitlab_arch /home/ecmatthee/.ssh/github_arch)
