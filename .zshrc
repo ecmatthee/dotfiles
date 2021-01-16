@@ -298,4 +298,4 @@ bindkey -M emacs '^N' history-substring-search-down
 #------------------------------
 
 # SSH Agent >> Keychain
-eval $(keychain --eval --quiet /home/ecmatthee/.ssh/gitlab_arch /home/ecmatthee/.ssh/github_arch)
+eval $(keychain --eval --quiet /home/ecmatthee/.ssh/arch_gitlab /home/ecmatthee/.ssh/arch_github)
