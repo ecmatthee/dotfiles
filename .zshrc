@@ -16,7 +16,17 @@ ZDOTDIR=${ZDOTDIR:-${HOME}}
 if ! [[ "${PATH}" =~ "^${HOME}/bin" ]]; then
     export PATH="${HOME}/bin:${PATH}"
 fi
+
+if [ -d ${HOME}/bin/flutter/bin ]; then
+    path+=("${HOME}/bin/flutter/bin")
+fi
+
+if [ -f /opt/google/chrome/chrome ]; then
+    export CHROME_EXECUTABLE="/opt/google/chrome/chrome"
+fi
+
 export XDG_CONFIG_HOME="$HOME/.config"
+
 #------------------------------
 # History stuff
 #------------------------------
